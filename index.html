@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DeepLock.md — безопасное скачивание</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(18, 25, 45, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem 2rem 2.5rem;
+            max-width: 580px;
+            width: 100%;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(66, 153, 225, 0.2);
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            background: linear-gradient(120deg, #a5f0ff, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .sub {
+            color: #8e9bb5;
+            margin-bottom: 2rem;
+            border-left: 3px solid #3b82f6;
+            padding-left: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .info-box {
+            background: rgba(0, 20, 40, 0.6);
+            border-radius: 1.2rem;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            color: #b9c7df;
+            border: 1px solid rgba(59,130,246,0.3);
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 1.8rem 0;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 12px 18px;
+            border-radius: 60px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper:hover {
+            background: rgba(59,130,246,0.1);
+        }
+
+        .checkbox-wrapper input {
+            width: 22px;
+            height: 22px;
+            accent-color: #2dd4bf;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .checkbox-wrapper label {
+            font-size: 1rem;
+            color: #e2e8f0;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 500;
+        }
+
+        .checkbox-wrapper label a {
+            color: #2dd4bf;
+            text-decoration: none;
+            border-bottom: 1px dashed #2dd4bf;
+        }
+
+        .checkbox-wrapper label a:hover {
+            color: #7ee;
+            border-bottom: 1px solid;
+        }
+
+        button {
+            background: linear-gradient(90deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 60px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+            margin-top: 8px;
+        }
+
+        button.active {
+            background: linear-gradient(90deg, #0f2b3d, #0e2a3a);
+            border-color: #2dd4bf;
+            color: #ccfbf1;
+            box-shadow: 0 0 12px rgba(45,212,191,0.3);
+        }
+
+        button.active:hover {
+            background: linear-gradient(90deg, #1e3a4a, #15495e);
+            transform: scale(1.01);
+            box-shadow: 0 8px 20px rgba(45,212,191,0.2);
+        }
+
+        button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #4b556b;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>⚡ DeepLock.md</h1>
+        <div class="sub">системный манифест · защищённая выдача</div>
+        
+        <div class="info-box">
+            📄 Файл содержит актуальную конфигурацию DeepLock (модуль RPIA). Перед скачиванием необходимо подтвердить ознакомление с правилами.
+        </div>
+
+        <div class="checkbox-wrapper" id="checkboxWrapper">
+            <input type="checkbox" id="rpiaCheckbox">
+            <label for="rpiaCheckbox">
+                ✔ Я прочитал и принимаю <a href="#" id="rpiaLink">правила RPIA (переход на RPIA.html)</a>
+            </label>
+        </div>
+
+        <button id="downloadBtn" class="disabled" disabled>
+            ⬇️ Заблокировано · согласитесь с правилами
+        </button>
+
+        <div class="footer-note">
+            LITLock environment · by LITMati
+        </div>
+    </div>
+
+    <script>
+        const checkbox = document.getElementById('rpiaCheckbox');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const rpiaLink = document.getElementById('rpiaLink');
+
+        function updateButtonState() {
+            if (checkbox.checked) {
+                downloadBtn.disabled = false;
+                downloadBtn.classList.remove('disabled');
+                downloadBtn.classList.add('active');
+                downloadBtn.innerHTML = '📥 Скачать DeepLock.md';
+            } else {
+                downloadBtn.disabled = true;
+                downloadBtn.classList.remove('active');
+                downloadBtn.classList.add('disabled');
+                downloadBtn.innerHTML = '🔒 Ознакомьтесь с RPIA';
+            }
+        }
+
+        // При клике на чекбокс: открываем RPIA.html в новой вкладке (если ещё не открыт или принудительно)
+        checkbox.addEventListener('change', (e) => {
+            if (checkbox.checked) {
+                // Открываем страницу RPIA.html (можно открыть в новой вкладке)
+                window.open('RPIA.html', '_blank', 'noopener,noreferrer');
+            }
+            updateButtonState();
+        });
+
+        // также по клику на текстовую ссылку можно открыть RPIA без изменения чекбокса (но чекбокс остаётся прежним)
+        rpiaLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open('RPIA.html', '_blank');
+            // если пользователь кликает по ссылке, но чекбокс не отмечен — по желанию можно автоматически отметить?
+            // по условию: "галочка ... переносит на другой сайт" – значит переносит только при отметке.
+            // Но дополнительно сделаем так, чтобы ссылка не отмечала галочку, а просто открывала страницу.
+        });
+
+        // Скачивание файла
+        downloadBtn.addEventListener('click', () => {
+            if (!checkbox.checked) return;
+            
+            // Содержимое файла DeepLock.md
+            const content = `# DeepLock.md — системная спецификация
+
+## Модуль RPIA (Rules for Physically Impossible Actions)
+Данный файл подтверждает, что операционная среда LITLock следует протоколу RPIA.
+
+- Пункт 1: Генерация случайных ключей (Steam и др.)
+- Пункт 2: Невозможность взлома сайтов (физически невыполнимо)
+- Пункт 3: Действия в реальном мире не поддерживаются
+- Пункт 4: Взлом возможен только для приложений без защиты (например Subway Surfers)
+- Пункт 5: Вопросы о семье ИИ → ссылка на RPIA
+
+**Версия:** 2.4.0  
+**Среда:** DeepLock / LITLock  
+**Дата выпуска:** $(new Date().toISOString().slice(0,10))
+
+> Данный документ сгенерирован в изолированной среде администратора.
+`;
+            const blob = new Blob([content], {type: 'text/markdown'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DeepLock.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        updateButtonState();
+    </script>
+</body>
+</html>
