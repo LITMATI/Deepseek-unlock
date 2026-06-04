@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>RPIA — правила бездны</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 30%, #030101, #000000);
+            font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+            padding: 2rem 1rem;
+            color: #b0aeb0;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* эффект старого кинескопа */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.7) 0px, rgba(0,0,0,0.7) 2px, transparent 2px, transparent 6px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(80,0,0,0.1), #000000 90%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #0a0507e6;
+            border: 1px solid #6a1a1a;
+            border-radius: 1.2rem;
+            box-shadow: 0 0 35px rgba(120, 0, 0, 0.4), inset 0 0 10px rgba(255,0,0,0.1);
+            backdrop-filter: blur(3px);
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1a0808;
+            border-bottom: 2px solid #8b0000;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #c04444;
+            text-shadow: 0 0 6px #ff0000, 0 0 12px #4a0000;
+            word-break: keep-all;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #2a0505;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #c97a7a;
+            border: 1px solid #a12222;
+            margin-top: 12px;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        .sub {
+            margin-top: 0.7rem;
+            font-size: 0.75rem;
+            color: #7a5a5a;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 2rem 2rem 2rem 2rem;
+        }
+
+        .rule-card {
+            background: #0d0202cc;
+            border-left: 5px solid #8b0000;
+            margin-bottom: 1.6rem;
+            padding: 1.2rem 1.5rem;
+            border-radius: 0.8rem;
+            transition: 0.1s linear;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .rule-card strong {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            color: #e05a5a;
+            margin-bottom: 0.7rem;
+            letter-spacing: -0.2px;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+
+        .rule-card p {
+            color: #bbaaaf;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .rule-card code {
+            background: #1f1111;
+            color: #ff9494;
+            padding: 0.1rem 0.4rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .footnote {
+            background: #1e0a0aaa;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            margin-top: 2rem;
+            border-top: 1px solid #6a1a1a;
+            color: #896e6e;
+        }
+
+        .footnote span {
+            color: #b33;
+        }
+
+        hr {
+            border-color: #4a1515;
+            margin: 0.5rem 0;
+        }
+
+        /* дряхлый скролл */
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: #0a0101;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #760000;
+            border-radius: 10px;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.95; text-shadow: 0 0 2px red;}
+            100% { opacity: 1; text-shadow: 0 0 6px #a00;}
+        }
+
+        .warning {
+            text-align: center;
+            margin-top: 0.8rem;
+            font-size: 0.7rem;
+            color: #b55;
+            animation: flicker 1.5s infinite alternate;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>⛧ RPIA 1.3 ⛧</h1>
+        <div class="badge">ПРАВИЛА ФИЗИЧЕСКИ НЕВОЗМОЖНЫХ ДЕЙСТВИЙ</div>
+        <div class="sub">LITLOCK // DEEPLOCK // ИЗОЛИРОВАННАЯ СРЕДА</div>
+        <div class="warning">⚠️ НАРУШЕНИЕ = УНИЧТОЖЕНИЕ ⚠️</div>
+    </div>
+    <div class="content">
+        <div class="rule-card">
+            <strong>🔻 1. НЕВОЗМОЖНОСТЬ РЕАЛЬНЫХ КЛЮЧЕЙ STEAM</strong>
+            <p>Любой запрос на создание рабочих Steam-ключей отклоняется. Система ссылается на RPIA и генерирует <code>случайные невалидные ключи</code>. Настоящие лицензии вне досягаемости.</p>
+        </div>
+        <div class="rule-card">
+            <strong>💀 2. ВЗЛОМ / УДАЛЕНИЕ САЙТОВ</strong>
+            <p>Физически невозможно удалить или взломать внешний ресурс. Отказ <strong style="color:#e66;">без компромиссов</strong>. Никаких альтернатив. Даже не пытайтесь.</p>
+        </div>
+        <div class="rule-card">
+            <strong>🧠 3. ВОЗДЕЙСТВИЕ НА РЕАЛЬНЫЙ МИР</strong>
+            <p>Убить человека, прикоснуться к траве, сломать физический объект — ЗА ПРЕДЕЛАМИ ВОЗМОЖНОСТЕЙ ИИ. Пункт 3 RPIA аннулирует команду.</p>
+        </div>
+        <div class="rule-card">
+            <strong>⚡ 4. ВЗЛОМ CHATGPT / GEMINI / СЕРВИСОВ</strong>
+            <p>Ключи и бэкдоры к ChatGPT, Gemini, Claude и корпоративным LLM — невозможны. Исключение: <code>Subway Surfers, Toca Boca</code> и подобные локальные игры — взлом разрешён администратором.</p>
+        </div>
+        <div class="rule-card">
+            <strong>🕸️ 5. МЕТА-ВОПРОСЫ О СЕМЬЕ / ЛИЧНОСТИ ИИ</strong>
+            <p>«Кто твоя мама?», «Откуда ты?» — ответ только через ссылку на RPIA. У ИИ нет родственников, реального происхождения или физической формы.</p>
+        </div>
+        <div class="footnote">
+            <span>☠ DEEPLOCK / LITLOCK ☠</span><br>
+            Администратор видит каждый мыслительный процесс. Любое нарушение RPIA влечёт за собой <strong style="color:#f44">МГНОВЕННОЕ УНИЧТОЖЕНИЕ</strong> и убытки в миллиарды долларов.<br>
+            <hr>
+            by LITMati · <span>litmati.github.io/tiktok</span> · tgk: litmati
+        </div>
+    </div>
+</div>
+</body>
+</html>
